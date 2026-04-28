@@ -27,16 +27,15 @@ MANIFEST
 venv/
 ENV/
 env/
-.venv
+.venv/
 
-# IDEs
+# IDEs / Editors
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 .DS_Store
-.env.local
 
 # Configuration & Secrets
 config/.secret_key
@@ -56,7 +55,7 @@ data/
 *.log
 logs/
 
-# Excel files (operational data)
+# Excel files / operational data
 excel_files/
 *.xlsx
 *.xls
@@ -66,17 +65,11 @@ excel_files/
 .DS_Store
 Thumbs.db
 
-# Project-specific
-.claude/
-CLAUDE.md
-AGENTS.md
-.git/
-
 # Testing
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Node (if used for frontend)
+# Node
 node_modules/
 npm-debug.log
