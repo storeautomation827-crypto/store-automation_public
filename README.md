@@ -1,205 +1,304 @@
-
 # Store Automation v1.01
 
-A Flask-based web application for streamlined store operations management and business reporting automation.
+A Flask-based web application for supporting daily store operations.
 
 ## Overview
 
-Store Automation is a comprehensive framework for managing daily store operations, expense tracking, and business intelligence. Built with Python and Flask, it provides an intuitive web interface for staff to input critical business metrics, while the backend orchestrates data processing, validation, and Excel-based reporting workflows.
+Store Automation is a web application designed to make daily store work easier to manage.
 
-This repository contains the core infrastructure and foundational systems that power the automation platform—designed with scalability and extensibility in mind for future service deployments.
+The application allows staff to enter daily reports, expenses, and sales-related information through a browser. The entered data is stored in SQLite and can later be reflected in Excel files used for store operations.
 
-## Key Features
+The goal of this project is not to replace the existing Excel workflow completely, but to support it with a simple web interface and reduce manual input work.
 
-- **Secure Authentication & Authorization**: User management with role-based access control
-- **Multi-Format Data Input**: Web-based forms for daily reports, expense tracking, and performance metrics
-- **Excel Integration**: Seamless export and append operations to Excel workbooks
-- **Data Validation & Path Security**: Robust input validation and file system safety mechanisms
-- **Comprehensive Test Coverage**: Unit and integration tests for critical business logic
-- **Modular Architecture**: Clean separation of concerns for easy extension and maintenance
+## What This Application Does
+
+- Provides a login-based web interface
+- Allows staff to enter daily reports and expense information
+- Stores submitted data in SQLite
+- Shows input history for confirmation
+- Reflects stored data into Excel files
+- Creates backups before writing to Excel files
+- Separates the main application logic into modules for easier maintenance
+
+## Basic Workflow
+
+1. A staff member logs in
+2. The staff member selects the type of input
+3. Daily report, expense, or related store information is entered
+4. The data is saved to SQLite
+5. The saved data can be reviewed later
+6. The data can be reflected in an Excel file
+7. A backup is created before the Excel file is updated
 
 ## Tech Stack
 
-- **Backend**: Python 3.12, Flask
-- **Database**: SQLite
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Testing**: pytest
-- **Data Processing**: openpyxl, pandas
+| Category | Technology |
+|----|----|
+| Backend | Python 3.12 / Flask |
+| Database | SQLite |
+| Frontend | HTML / CSS / JavaScript |
+| Excel Handling | openpyxl |
+| Data Processing | pandas |
+| Testing | pytest |
 
 ## Project Structure
 
-```
-store-automation/
-├── app/
-│   ├── auth/              # Authentication & user management
-│   ├── excel/             # Excel file operations (read/write/backup)
-│   ├── services/          # Business logic & database operations
-│   ├── web/               # Flask blueprints & route handlers
-│   └── __init__.py        # App factory pattern
-├── templates/             # Jinja2 HTML templates
-├── static/
-│   ├── css/               # Stylesheets
-│   └── js/                # Frontend logic
-├── tests/                 # Unit & integration tests
-├── scripts/               # Utility scripts
-├── config/                # Configuration files (see below)
-├── requirements.txt       # Python dependencies
-└── run.py                 # Application entry point
-```
+The main files and folders are organized as follows.
+
+- `app/`
+  - Main Flask application code.
+  - Authentication, Excel handling, database logic, and web routes are separated here.
+
+- `app/auth/`
+  - Login, user management, and session-related logic.
+
+- `app/excel/`
+  - Excel reading, writing, and backup-related logic.
+
+- `app/services/`
+  - SQLite operations and data handling logic.
+
+- `app/web/`
+  - Flask routes and form submission handling.
+
+- `templates/`
+  - HTML templates used for page rendering.
+
+- `static/`
+  - CSS and JavaScript files used on the frontend.
+
+- `tests/`
+  - Test code for database operations, Excel writing, and form handling.
+
+- `scripts/`
+  - Utility scripts for development and checking behavior.
+
+- `config/`
+  - Configuration files for stores and users.
+  - Actual operation-specific configuration files are managed separately from the public repository.
+
+- `requirements.txt`
+  - Python packages required to run the application.
+
+- `run.py`
+  - Entry point for starting the Flask application.
 
 ## Getting Started
 
-### Prerequisites
+### Requirements
 
-- Python 3.10+
-- pip package manager
+- Python 3.10 or later
+- pip
 - Windows, macOS, or Linux
 
-### Installation
+### 1. Clone the Repository
 
-1. Clone the repository:
 ```bash
-git clone https://github.com/storeautomation827/store-automation.git
-cd store-automation
+git clone https://github.com/storeautomation827-crypto/store-automation_public.git
 ```
 
-2. Create a virtual environment:
+```bash
+cd store-automation_public
+```
+
+### 2. Create and Activate a Virtual Environment
+
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. Install dependencies:
+For Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+For macOS / Linux:
+
+```bash
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Configure your environment:
+### 4. Prepare Configuration Files
+
+Copy the example configuration files as needed.
+
 ```bash
-# Copy the example configuration files
 cp config/stores.json.example config/stores.json
+```
+
+```bash
 cp config/users.json.example config/users.json
 ```
 
-5. Initialize the application:
+For Windows Command Prompt:
+
+```cmd
+copy config\stores.json.example config\stores.json
+```
+
+```cmd
+copy config\users.json.example config\users.json
+```
+
+### 5. Run the Application
+
 ```bash
 python run.py
 ```
 
-The application will start on `http://localhost:5000`
+After starting the application, open the following URL in your browser.
 
-## Configuration
+```text
+http://localhost:5000
+```
+
+## Configuration Files
 
 ### stores.json
 
-Define your store locations and metadata:
+This file defines store information.
 
 ```json
 {
   "stores": [
     {
-      "id": "store_id_1",
-      "name": "Store Name",
+      "id": "store_001",
+      "name": "Sample Store",
       "active": true
     }
   ]
 }
 ```
 
+Main fields:
+
+- `id`
+  - Store identifier.
+
+- `name`
+  - Display name of the store.
+
+- `active`
+  - Whether the store is active.
+
 ### users.json
 
-Manage user credentials and permissions:
+This file defines user login information.
 
 ```json
 {
   "users": [
     {
       "username": "admin",
-      "password_hash": "hashed_password_here",
+      "password_hash": "hashed_password",
       "role": "admin"
     }
   ]
 }
 ```
 
-> **Security Note**: Passwords should be properly hashed using werkzeug.security or similar. Never commit credentials to version control.
+Main fields:
 
-## Core Modules
+- `username`
+  - Username used for login.
 
-### Authentication (`app/auth/`)
-- User login and session management
-- Password validation and security
-- User file persistence
+- `password_hash`
+  - Hashed password.
 
-### Excel Operations (`app/excel/`)
-- **Scanner**: Reads and parses Excel workbooks
-- **Writer**: Writes data to Excel workbooks with cell-level control
-- **Backup**: Automated backup of critical Excel files
-- **Path Guard**: Validates file paths to prevent directory traversal attacks
+- `role`
+  - User role.
 
-### Services (`app/services/`)
-- **Database**: SQLite ORM operations and schema initialization
-- Business logic for data aggregation and reporting
+### Notes on Configuration
 
-### Web Routes (`app/web/`)
-- RESTful endpoints for form submissions
-- Data input and retrieval
-- Dynamic reporting
+- Passwords should be hashed before use.
+- Do not commit plain text passwords.
+- Operation-specific settings and data should not be committed to GitHub.
 
-## Testing
+## Core Features
 
-Run the test suite:
+### Authentication
+
+- User login
+- Session management
+- Role-based access control
+
+### Input Forms
+
+- Daily report input
+- Expense input
+- Business report input
+- Input confirmation
+
+### Data Storage
+
+- Saves submitted data to SQLite
+- Allows input history to be reviewed
+- Keeps data ready for later Excel reflection
+
+### Excel Integration
+
+- Reflects saved data into Excel files
+- Creates backups before writing
+- Checks the target file before writing
+
+### Testing
+
+- Database operation tests
+- Excel reading and writing tests
+- Form handling tests
+- Main business logic tests
+
+## Running Tests
+
+Run all tests:
 
 ```bash
 pytest tests/
 ```
 
-Run with coverage:
+Run tests with coverage:
 
 ```bash
 pytest --cov=app tests/
 ```
 
-Current test coverage includes:
-- Database operations and schema
-- Excel file reading/writing
-- Path security and validation
-- Route handlers and form processing
+## Scope of This Repository
 
-## Development Workflow
+This repository contains the main structure of the Flask application, input and storage flow, Excel integration, backup handling, and test code.
 
-1. Create a feature branch: `git checkout -b feature/your-feature`
-2. Make your changes and write tests
-3. Run `pytest` to ensure all tests pass
-4. Commit with clear messages: `git commit -m "feat: description"`
-5. Push and open a pull request
+The following items are not included:
 
-## Future Roadmap
+- Real store names
+- Real sales data
+- Actual Excel files used in operation
+- Store-specific cell mappings
+- Operation-specific configuration files
 
-- Multi-database backend support (PostgreSQL, MySQL)
-- REST API expansion for third-party integrations
-- Real-time dashboard and analytics
-- Mobile app integration
-- Cloud deployment templates
-- Advanced reporting and forecasting
-- Multi-language support
+## Future Improvements
 
-## Architecture Notes
+- Improve expense and petty cash input features
+- Improve the input history screen
+- Expand Excel reflection targets
+- Add stronger admin review features
+- Support multiple stores
+- Improve role management
+- Consider cloud deployment
 
-This codebase demonstrates:
-- **Clean Architecture**: Separation between business logic, persistence, and presentation
-- **Security-First Design**: Input validation, path safety, and authenticated access
-- **Testability**: Modular design enables comprehensive unit testing
-- **Scalability**: Factory pattern and blueprint-based routing for easy feature addition
+## Notes
 
-## Limitations & Disclaimers
+This repository is shared for educational and development purposes. It does not include actual store data or operation-specific files.
 
-This is a demonstration of core automation infrastructure. Certain operational details, store-specific configurations, and real-world data have been abstracted or removed for privacy and business protection.
+For production use, additional setup would be required, such as:
 
-For production deployment:
-- Implement proper secret management (environment variables, HashiCorp Vault)
-- Add comprehensive logging and monitoring
-- Deploy with production-grade web server (Gunicorn, uWSGI)
-- Implement rate limiting and request validation
-- Enable HTTPS and CORS policies
-
+- Secret management using environment variables
+- HTTPS support
+- Production web server setup
+- Logging and access control
+- Regular data backup
