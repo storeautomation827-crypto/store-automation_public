@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Store Automation v1.01
 
 A Flask-based web application for streamlined store operations management and business reporting automation.
@@ -212,3 +213,7 @@ This project is provided for educational and portfolio purposes. All rights rese
 Feel free to open an issue or reach out via GitHub discussions.
 
 Created for showcasing software engineering fundamentals in store operations automation.
+=======
+# store-automation_public
+Flask-based store operations automation platform
+>>>>>>> 4e25e26fb53316f594c8dd72d7606910dd7ffcce
