@@ -1,0 +1,14 @@
+{
+  "stores": [
+    {
+      "id": "store_001",
+      "name": "Sample Store A",
+      "active": true
+    },
+    {
+      "id": "store_002",
+      "name": "Sample Store B",
+      "active": true
+    }
+  ]
+}

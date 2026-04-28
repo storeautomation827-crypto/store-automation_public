@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "password_hash": "use_werkzeug.security.generate_password_hash()",
+      "role": "admin"
+    },
+    {
+      "username": "staff_001",
+      "password_hash": "use_werkzeug.security.generate_password_hash()",
+      "role": "staff"
+    }
+  ]
+}
