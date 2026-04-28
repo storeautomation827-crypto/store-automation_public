@@ -203,17 +203,3 @@ For production deployment:
 - Implement rate limiting and request validation
 - Enable HTTPS and CORS policies
 
-## License
-
-This project is provided for educational and portfolio purposes. All rights reserved.
-
----
-
-**Questions or Feedback?**  
-Feel free to open an issue or reach out via GitHub discussions.
-
-Created for showcasing software engineering fundamentals in store operations automation.
-=======
-# store-automation_public
-Flask-based store operations automation platform
->>>>>>> 4e25e26fb53316f594c8dd72d7606910dd7ffcce
