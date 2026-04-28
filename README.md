@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Store Automation v1.01
 
 A Flask-based web application for streamlined store operations management and business reporting automation.
