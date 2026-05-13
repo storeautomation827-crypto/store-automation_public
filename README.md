@@ -1,21 +1,21 @@
 # Store Automation v1.01
 
-A Flask web app I built to reduce the manual work of entering daily store data into Excel.
+A Flask web app built to reduce the manual work of entering daily store data into Excel.
 
-Staff can submit daily reports, expenses, loss records, and petty cash from a browser,
-review the data, and push it to existing Excel files — with a test-write step before touching production.
+Staff can submit various business inputs from a browser, review the data, and push it to existing Excel files —
+with a dry-run preview and a test-write step before touching production.
 
 ## Background
 
-At the restaurant where I work part-time, daily sales, expenses, and other data are all managed in Excel.
-The entries are simple but repetitive, and I wanted to see if a web form could make the workflow a bit smoother.
+At the restaurant where I work part-time, daily operational data is managed in Excel.
+The entries are simple but repetitive, and I wanted to see if a web form could make the workflow smoother.
 
 The core constraint was that the existing Excel files had to stay exactly as-is.
 So instead of replacing them, I built this as a helper tool: browser input → SQLite → review → Excel.
 
 Before this, I built a LINE Bot + OCR tool that reads receipt images and fills in Excel automatically.
-That project worked, but as the number of input fields grew, the back-and-forth message flow became awkward.
-Rebuilding it as a Flask app made the interface much easier to extend.
+That worked, but as the number of input fields grew, the message-based flow became awkward.
+Rebuilding as a Flask app made the interface much easier to extend.
 
 → Previous project: [store-automation-ocr](https://github.com/storeautomation827-crypto/store-automation-ocr)
 
@@ -39,11 +39,11 @@ It runs on Flask and SQLite only, so the store PC just needs Python and three pa
 ## Features
 
 ### Input Forms
-- **Daily report**: net sales, group count, customer count
-- **Business report**: free text
-- **Expenses**: ingredients (skewers, processed food, produce), drinks, supplies
-- **Loss records**: cooking loss, disposal, trial batches, order mistakes, etc.
-- **Petty cash**: payee, item name, amount in/out (item categories loaded from mapping config)
+
+Multiple types of business input forms are available from the browser.
+Each form type has its own validation logic (numeric fields, required text fields, etc.)
+before saving to SQLite. Form types and field details are managed via system config
+and are not disclosed in this repository.
 
 ### Data Management
 - All submitted forms are saved to the `input_history` SQLite table with `pending` status
@@ -56,6 +56,11 @@ It runs on Flask and SQLite only, so the store PC just needs Python and three pa
 3. Review the result on screen (written cells, skipped items, backup path)
 4. Push to production Excel when confirmed; `status` updates to `reflected`
 
+### Authentication and Roles
+- Session-based login authentication
+- Multiple permission roles are supported (role names and details are not disclosed)
+- Available features vary by role
+
 ### Safety Design
 
 Three deliberate constraints on the write path:
@@ -63,7 +68,7 @@ Three deliberate constraints on the write path:
 **PathGuard (write path validation)**
 Writes are only allowed within a caller-specified `allowed_root` directory.
 Paths are normalized with `Path.resolve()` before comparison, which prevents `../` traversal.
-Files matching the backup naming pattern (`_backup_YYYYMMDD_HHMMSS`) or Excel temp files (`~$`) are always rejected as write targets.
+Files matching the backup naming pattern (`_backup_YYYYMMDD_HHMMSS`) or Excel temp files (`~$`) are always rejected.
 
 **Mandatory backup**
 A backup copy is always created before writing.
@@ -83,7 +88,7 @@ CREATE TABLE input_history (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     store_id      TEXT    NOT NULL,
     business_date TEXT    NOT NULL,        -- YYYY-MM-DD
-    input_type    TEXT    NOT NULL,        -- daily_report, petty_cash, etc.
+    input_type    TEXT    NOT NULL,        -- input category (managed via config)
     data_json     TEXT,                   -- input payload as JSON
     created_by    TEXT,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -98,7 +103,7 @@ Validation is handled in Python (`db.py`) rather than database constraints.
 
 ```
 1. Staff logs in from browser
-2. Fill in a form (daily report, expense, loss, etc.)
+2. Fill in a business input form
 3. Data is validated and saved to SQLite as "pending"
 4. Open /review to see pending records and a write plan preview
 5. Run a test write to the test Excel copy (/review/write_test)
@@ -168,8 +173,6 @@ cp config/users.json.example config/users.json
 python run.py
 ```
 
-Open http://localhost:5000 in your browser.
-
 ## Running Tests
 
 21 test files covering DB operations, Excel writing, path guard, and routing.
@@ -191,7 +194,8 @@ Tests always use a temporary SQLite database and are designed so they never read
 ## What's Not in This Repo
 
 This repo has the Flask app, SQLite logic, Excel handling, and tests.
-Real store names, actual sales data, production Excel files, and store-specific config are not included.
+Real store names, actual business data, production Excel files, input type details,
+and store-specific config are not included.
 
 ## License
 
